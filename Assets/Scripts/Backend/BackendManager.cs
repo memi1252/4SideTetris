@@ -27,4 +27,9 @@ public class BackendManager : MonoBehaviour
 
         
     }
+    
+    public void MoveScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(3);
+    }
 }

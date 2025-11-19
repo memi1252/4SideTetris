@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using BackEnd;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,9 +19,11 @@ public class MainMenuUI : MonoBehaviour
     public GameObject HelpPanel;
     public Button HelpCloseButton;
     public Button HelpButton;
+    public Button logoutButton;
 
     private void Awake()
     {
+        HelpPanel.SetActive(false);
         StartButton.onClick.AddListener(() =>
         {
             
@@ -38,6 +43,10 @@ public class MainMenuUI : MonoBehaviour
             #else
             Application.Quit();
             #endif
+        });
+        logoutButton.onClick.AddListener(() =>
+        {
+            BackendLogin.Instance.CustomLogOut();
         });
         settingsButton.onClick.AddListener(() =>
         {
@@ -85,21 +94,63 @@ public class MainMenuUI : MonoBehaviour
            settingUI.effectsSlider.value = PlayerPrefs.GetFloat("effect");
         }
         
-        if (PlayerPrefs.HasKey("maxPoint"))
+        var bro = Backend.GameData.Get("USER_DATA", new Where());
+        if (bro.IsSuccess())
         {
-            maxpoint.text = $"최대 포인트 : {PlayerPrefs.GetInt("maxPoint")}";
-            float time = PlayerPrefs.GetFloat("playTime");
-            playTime.text =
-                $"플레이 타임 : {(int)time / 60:00} : {(int)time % 60:00}";
-            blockcount.text = $"사용한 블럭 갯수 : {PlayerPrefs.GetInt("blockCount")}개";
+            LitJson.JsonData gameDataJson = bro.FlattenRows();
+            if (gameDataJson.Count > 0)
+            {
+                
+                List<UserData>  userDataList = new List<UserData>();
+                
+                
+                UserData userData = new UserData();
+                for (int i = 0; i < gameDataJson.Count; i++)
+                {
+                    if (gameDataJson[i]["name"].ToString() == BackendLogin.Instance.GetNickName())
+                    {
+                        userData.point = int.Parse(gameDataJson[i]["point"].ToString());
+                        userData.playTime = float.Parse(gameDataJson[i]["playTime"].ToString());
+                        userData.blockCount = int.Parse(gameDataJson[i]["blockCount"].ToString());
+                        userDataList.Add(userData);
+                        userData = new UserData();
+                    }
+                    
+                }
+                var sortedList = userDataList.OrderByDescending(user => user.point).ToList();
+                
+                if(sortedList.Count == 0)
+                {
+                    Debug.LogWarning("랭킹 데이터가 존재하지 않습니다.");
+                    maxpoint.text = $"최대 기록 없음";
+                    playTime.text = $"게임을 시작해";
+                    blockcount.text = $"기록을 세우세요";
+                    return;
+                }
+                else
+                {
+                    maxpoint.text = $"최대 포인트 : {sortedList[0].point}점";;
+                    float time = sortedList[0].playTime;
+                    playTime.text =
+                        $"플레이 타임 : {(int)time / 60:00} : {(int)time % 60:00}";
+                    blockcount.text = $"사용한 블럭 갯수 : {sortedList[0].blockCount}개";
+                }
+            }
+            else
+            {
+                Debug.LogWarning("랭킹 데이터가 존재하지 않습니다.");
+                maxpoint.text = $"최대 기록 없음";
+                playTime.text = $"게임을 시작해";
+                blockcount.text = $"기록을 세우세요";
+            }
         }
         else
         {
             maxpoint.text = $"최대 기록 없음";
             playTime.text = $"게임을 시작해";
             blockcount.text = $"기록을 세우세요";
+            Debug.LogError("랭킹 데이터 조회 실패: " + bro);
         }
-        HelpPanel.SetActive(false);
     }
 
     private void Update()
@@ -121,4 +172,6 @@ public class MainMenuUI : MonoBehaviour
     {
         GameObject.Find("RankingUI").GetComponent<RankingUI>().Show();
     }
+    
+    
 }

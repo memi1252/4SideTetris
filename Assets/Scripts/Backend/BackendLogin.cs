@@ -4,6 +4,7 @@ using UnityEngine;
 
 // 뒤끝 SDK namespace 추가
 using BackEnd;
+using UnityEngine.SceneManagement;
 
 public class BackendLogin
 {
@@ -40,6 +41,23 @@ public class BackendLogin
         }
 
         return null;
+    }
+    
+    public void CustomLogOut()
+    {
+        Debug.Log("로그아웃을 요청합니다.");
+
+        var bro = Backend.BMember.Logout();
+
+        if (bro.IsSuccess())
+        {
+            Debug.Log("로그아웃에 성공했습니다. : " + bro);
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            Debug.LogError("로그아웃에 실패했습니다. : " + bro);
+        }
     }
 
     public string CustomLogin(string id, string pw)

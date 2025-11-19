@@ -26,8 +26,8 @@ public class Piece : MonoBehaviour
         this.position = position;
 
         rotationIndex = 0;
-        stepTime = Time.time + stepDelay;
-        moveTime = Time.time + moveDelay;
+        stepTime = Time.time + stepDelay *Time.deltaTime;
+        moveTime = Time.time + moveDelay*Time.deltaTime;
         lockTime = 0f;
 
         if (cells == null) 
@@ -133,7 +133,7 @@ public class Piece : MonoBehaviour
                 if (Move(Vector2Int.up)) 
                 {
                     // Update the step time to prevent double movement
-                    stepTime = Time.time + stepDelay;
+                    stepTime = Time.time + stepDelay*Time.deltaTime;
                 }
                 Debug.Log("up");
                 board.Set(this);
@@ -154,7 +154,7 @@ public class Piece : MonoBehaviour
                 if (Move(Vector2Int.down))
                 {
                     // Update the step time to prevent double movement
-                    stepTime = Time.time + stepDelay;
+                    stepTime = Time.time + stepDelay*Time.deltaTime;
                 }
 
                 Debug.Log("down");
@@ -176,7 +176,7 @@ public class Piece : MonoBehaviour
                 board.Clear(this);
                 if (Move(Vector2Int.left))
                 {
-                    stepTime = Time.time + stepDelay;
+                    stepTime = Time.time + stepDelay*Time.deltaTime;
                 }
 
                 Debug.Log("left");
@@ -196,7 +196,7 @@ public class Piece : MonoBehaviour
                 board.Clear(this);
                 if (Move(Vector2Int.right))
                 {
-                    stepTime = Time.time + stepDelay;
+                    stepTime = Time.time + stepDelay*Time.deltaTime;
                 }
 
                 Debug.Log("right");
@@ -220,7 +220,7 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.down))
                     {
                         // Update the step time to prevent double movement
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -230,14 +230,14 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.left))
                     {
 
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     if (Move(Vector2Int.right))
                     {
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
             }
@@ -251,7 +251,7 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.up))
                     {
                         // Update the step time to prevent double movement
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -260,14 +260,14 @@ public class Piece : MonoBehaviour
                 {
                     if (Move(Vector2Int.left))
                     {
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     if (Move(Vector2Int.right))
                     {
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
             }
@@ -280,7 +280,7 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.up))
                     {
                         // Update the step time to prevent double movement
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -290,7 +290,7 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.down))
                     {
                         // Update the step time to prevent double movement
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -299,7 +299,7 @@ public class Piece : MonoBehaviour
                 {
                     if (Move(Vector2Int.right))
                     {
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -313,7 +313,7 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.up))
                     {
                         // Update the step time to prevent double movement
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -323,7 +323,7 @@ public class Piece : MonoBehaviour
                     if (Move(Vector2Int.down))
                     {
                         // Update the step time to prevent double movement
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
 
@@ -332,7 +332,7 @@ public class Piece : MonoBehaviour
                 {
                     if (Move(Vector2Int.left))
                     {
-                        stepTime = Time.time + stepDelay;
+                        stepTime = Time.time + stepDelay*Time.deltaTime;
                     }
                 }
             }
@@ -347,7 +347,7 @@ public class Piece : MonoBehaviour
         {
         if(GameManager.instance.spawnLocation == GameManager.SpawnLocation.Top)
         {
-            stepTime = Time.time + stepDelay;
+            stepTime = Time.time + stepDelay*Time.deltaTime;
 
             // Step down to the next row
             Move(Vector2Int.down);
@@ -360,7 +360,7 @@ public class Piece : MonoBehaviour
         }
         else if(GameManager.instance.spawnLocation == GameManager.SpawnLocation.Bottom)
         {
-            stepTime = Time.time + stepDelay;
+            stepTime = Time.time + stepDelay*Time.deltaTime;
 
             // Step down to the next row
             Move(Vector2Int.up);
@@ -373,7 +373,7 @@ public class Piece : MonoBehaviour
         }
         else if(GameManager.instance.spawnLocation == GameManager.SpawnLocation.Left)
         {
-            stepTime = Time.time + stepDelay;
+            stepTime = Time.time + stepDelay*Time.deltaTime;
 
             // Step down to the next row
             Move(Vector2Int.right);
@@ -386,7 +386,7 @@ public class Piece : MonoBehaviour
         }
         else if(GameManager.instance.spawnLocation == GameManager.SpawnLocation.Right)
         {
-            stepTime = Time.time + stepDelay;
+            stepTime = Time.time + stepDelay*Time.deltaTime;
 
             // Step down to the next row
             Move(Vector2Int.left);
@@ -464,7 +464,7 @@ public class Piece : MonoBehaviour
         if (valid)
         {
             position = newPosition;
-            moveTime = Time.time + moveDelay;
+            moveTime = Time.time + moveDelay*Time.deltaTime;
             lockTime = 0f; // reset
         }
 

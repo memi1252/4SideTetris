@@ -10,7 +10,7 @@ public class LoginUI : MonoBehaviour
     [SerializeField] private InputField userid;
     [SerializeField] private InputField password;
     [SerializeField] private InputField nickname;
-    [SerializeField] private Text StatusText;
+    [SerializeField] public Text StatusText;
 
     public void Logint()
     {
